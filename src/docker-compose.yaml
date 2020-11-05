@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_BD=mass_schedule
+    volumes:
+      - "postgres_data:/data/postgres"
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
+    networks:
+      - mass_schedule_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "8080:8080"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    depends_on:
+      - postgres
+    networks:
+      - mass_schedule_network
+
+networks: 
+  mass_schedule_network:
+    driver: bridge
+
+volumes: 
+  postgres_data:
