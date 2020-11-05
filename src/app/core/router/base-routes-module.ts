@@ -23,7 +23,7 @@ export class BaseRouterModule {
   protected readonly context: string = "/api";
   protected version: string = "v1";
   protected moduleName: string = "";
-  protected baseEndpoint: string = `${this.context}/${this.version}/${this.moduleName}/`;
+  protected baseEndpoint: string;
 
   protected MODULE_ENDPOINT_MAP: ModuleEndpointMap = {
     [this.moduleName]: {
@@ -44,6 +44,7 @@ export class BaseRouterModule {
   constructor(moduleName: string) {
     if (typeof moduleName == "string") {
       this.moduleName = moduleName;
+      this.baseEndpoint = `${this.context}/${this.version}/${this.moduleName}/`;
     }
   }
 

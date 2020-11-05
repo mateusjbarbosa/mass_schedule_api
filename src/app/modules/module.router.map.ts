@@ -1,4 +1,4 @@
-import { UserRouterModule } from "./User/user.router";
+import { UserRouterModule } from "./user/user.router";
 
 export interface FeatureModuleRouter {
   moduleName: any;
