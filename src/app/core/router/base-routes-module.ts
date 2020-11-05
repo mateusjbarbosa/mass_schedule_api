@@ -22,7 +22,8 @@ export interface ModuleEndpointMap {
 export class BaseRouterModule {
   protected readonly context: string = "/api";
   protected version: string = "v1";
-  protected moduleName: string;
+  protected moduleName: string = "";
+  protected baseEndpoint: string = `${this.context}/${this.version}/${this.moduleName}/`;
 
   protected MODULE_ENDPOINT_MAP: ModuleEndpointMap = {
     [this.moduleName]: {
@@ -32,7 +33,7 @@ export class BaseRouterModule {
           callback: (req: Request, res: Response) => {
             res
               .sendStatus(HttpStatus.OK)
-              .send({ status: HttpStatus.OK, msg: "ok" });
+              .send({ status: HttpStatus.OK, msg: "OK" });
           },
           isProtected: false,
         },

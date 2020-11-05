@@ -45,6 +45,8 @@ export class RouterModule {
             .all(authenticate())
             [resgistredVeb](callback)
         : this.express.route(endpoint)[resgistredVeb](callback);
+
+      console.log(`${resgistredVeb}: ${endpoint}`);
     }
   }
 
@@ -56,11 +58,15 @@ export class RouterModule {
   public exposeRoutes(authenticate?: Function): void {
     const registratedModules: ModuleEndpointMap[] = this.routerFactory.getRegisteredModules();
 
+    console.log("Routes:");
+
     if (registratedModules && Array.isArray(registratedModules)) {
       registratedModules.forEach((module) => {
         const moduleName: string = Object.keys(module)[0];
         this.extractRouterInfoFromModule(authenticate, module[moduleName]);
       });
     }
+
+    console.log("---");
   }
 }

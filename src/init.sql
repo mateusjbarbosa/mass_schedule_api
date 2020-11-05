@@ -1,1 +1,1 @@
-create database etanois_test with encoding 'utf-8';
+create database mass_schedule with encoding 'utf-8';

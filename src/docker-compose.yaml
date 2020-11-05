@@ -18,10 +18,10 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     ports:
-      - "8080:8080"
+      - "8007:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: "admin"
-      PGADMIN_DEFAULT_PASSWORD: "admin"
+      PGADMIN_DEFAULT_EMAIL: "admin@massschedule.com"
+      PGADMIN_DEFAULT_PASSWORD: "adminpass123"
     depends_on:
       - postgres
     networks:
