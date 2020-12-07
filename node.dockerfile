@@ -4,8 +4,9 @@ WORKDIR /mass_schedule_app
 
 COPY . /mass_schedule_app
 
-RUN npm install 
+RUN npm install
 
-ENTRYPOINT npm start
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.7.3/wait /wait
+RUN chmod +x /wait 
 
-EXPOSE 3000
+CMD /wait && npm start
