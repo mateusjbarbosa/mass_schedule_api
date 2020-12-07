@@ -1,0 +1,17 @@
+version: '3'
+
+services: 
+  api:
+    build: 
+      dockerfile: ./node.dockerfile
+      context: .
+    image: mateusjbarbosa/mass_schedule_api
+    container_name: mass_schedule_api
+    ports: 
+      - "3000"
+    networks: 
+      - network
+
+networks: 
+  network:
+    driver: bridge
