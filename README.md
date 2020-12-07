@@ -21,3 +21,4 @@ Below are some utilities for better use of the Mass Schedule API.
 ## Ports
 
 - API: 3000
+- MySQL: 3306
