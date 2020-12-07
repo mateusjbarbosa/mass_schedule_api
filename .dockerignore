@@ -1,0 +1,13 @@
+# Directories
+.vscode
+docs
+
+# Files
+.DS_Store
+
+.gitignore
+
+*.dockerfile
+docker-compose.yml
+
+README.md

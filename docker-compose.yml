@@ -1,16 +1,39 @@
 version: '3'
 
 services: 
+  mysql:
+    build: 
+      dockerfile: ./mysql.dockerfile
+      context: .
+    image: mateusjbarbosa/mass_schedule_mysql
+    container_name: mass_schedule_mysql
+    restart: always
+    networks: 
+      - network
+    ports: 
+      - "3306:3306"
+    volumes: 
+      - data:/data
+
   api:
     build: 
       dockerfile: ./node.dockerfile
       context: .
     image: mateusjbarbosa/mass_schedule_api
     container_name: mass_schedule_api
-    ports: 
-      - "3000"
+    environment:
+      WAIT_HOSTS: mysql:3306
+      WAIT_SLEEP_INTERVAL: 10
+      WAIT_HOSTS_TIMEOUT: 120
     networks: 
       - network
+    ports: 
+      - "3000:3000"
+    depends_on: 
+      - mysql
+    
+volumes: 
+  data:
 
 networks: 
   network:
