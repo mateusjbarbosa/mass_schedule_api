@@ -1,11 +1,13 @@
-const bodyParser = require('body-parser')
+const { json } = require('body-parser')
 const express = require('express')
+
+const generateTables = require('./database/generate_tables')
 
 const app = express()
 
-app.use(bodyParser.json())
+app.use(json())
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
   res
     .status(200)
     .send({
@@ -13,6 +15,8 @@ app.get('/', (req, res) => {
       'docs': "http://example.com/api/docs"
     })
 })
+
+generateTables.generate()
 
 // Server up
 app.listen(3000, () => {
