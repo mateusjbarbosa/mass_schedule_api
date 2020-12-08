@@ -15,16 +15,26 @@ services:
     volumes: 
       - data:/data
 
+  pgadmin:
+    build: 
+      dockerfile: ./pgadmin.dockerfile
+      context: .
+    image: mateusjbarbosa/mass_schedule_pgadmin
+    container_name: mass_schedule_pgadmin
+    restart: always
+    networks: 
+      - network
+    ports: 
+      - "3001:3001"
+    depends_on: 
+      - postgresql
+
   api:
     build: 
       dockerfile: ./node.dockerfile
       context: .
     image: mateusjbarbosa/mass_schedule_api
     container_name: mass_schedule_api
-    environment:
-      WAIT_HOSTS: postgresql:5432
-      WAIT_SLEEP_INTERVAL: 10
-      WAIT_HOSTS_TIMEOUT: 120
     networks: 
       - network
     ports: 
