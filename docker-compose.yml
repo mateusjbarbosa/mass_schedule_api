@@ -3,7 +3,7 @@ version: '3'
 services: 
   postgresql:
     build: 
-      dockerfile: ./postgresql.dockerfile
+      dockerfile: ./dockerfiles/postgresql.dockerfile
       context: .
     image: mateusjbarbosa/mass_schedule_postgresql
     container_name: mass_schedule_postgresql
@@ -17,7 +17,7 @@ services:
 
   pgadmin:
     build: 
-      dockerfile: ./pgadmin.dockerfile
+      dockerfile: ./dockerfiles/pgadmin.dockerfile
       context: .
     image: mateusjbarbosa/mass_schedule_pgadmin
     container_name: mass_schedule_pgadmin
@@ -31,7 +31,7 @@ services:
 
   api:
     build: 
-      dockerfile: ./node.dockerfile
+      dockerfile: ./dockerfiles/node.dockerfile
       context: .
     image: mateusjbarbosa/mass_schedule_api
     container_name: mass_schedule_api
