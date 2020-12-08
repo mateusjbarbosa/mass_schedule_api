@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "root",
+    "username": "postgres",
     "password": "root",
     "database": "mass_schedule_database",
-    "host": "mysql",
-    "dialect": "mysql"
+    "host": "postgresql",
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "database_test",
-    "host": "mysql",
-    "dialect": "mysql"
+    "host": "postgresql",
+    "dialect": "postgres"
   },
   "production": {
     "username": "root",
     "password": null,
     "database": "database_production",
-    "host": "mysql",
-    "dialect": "mysql"
+    "host": "postgresql",
+    "dialect": "postgres"
   }
 }

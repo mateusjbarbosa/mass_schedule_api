@@ -1,17 +1,17 @@
 version: '3'
 
 services: 
-  mysql:
+  postgresql:
     build: 
-      dockerfile: ./mysql.dockerfile
+      dockerfile: ./postgresql.dockerfile
       context: .
-    image: mateusjbarbosa/mass_schedule_mysql
-    container_name: mass_schedule_mysql
+    image: mateusjbarbosa/mass_schedule_postgresql
+    container_name: mass_schedule_postgresql
     restart: always
     networks: 
       - network
     ports: 
-      - "3306:3306"
+      - "5432:5432"
     volumes: 
       - data:/data
 
@@ -22,7 +22,7 @@ services:
     image: mateusjbarbosa/mass_schedule_api
     container_name: mass_schedule_api
     environment:
-      WAIT_HOSTS: mysql:3306
+      WAIT_HOSTS: postgresql:5432
       WAIT_SLEEP_INTERVAL: 10
       WAIT_HOSTS_TIMEOUT: 120
     networks: 
@@ -30,7 +30,7 @@ services:
     ports: 
       - "3000:3000"
     depends_on: 
-      - mysql
+      - postgresql
     
 volumes: 
   data:
