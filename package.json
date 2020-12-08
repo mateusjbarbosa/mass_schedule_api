@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "npx sequelize-cli db:migrate && node src/server.js",
+    "start": "node src/server.js",
     "test": ""
   },
   "keywords": [],
@@ -15,7 +15,6 @@
     "express": "4.17.1",
     "pg": "8.3.3",
     "path": "0.12.7",
-    "sequelize": "6.3.5",
-    "sequelize-cli": "6.2.0"
+    "sequelize": "6.3.5"
   }
 }
