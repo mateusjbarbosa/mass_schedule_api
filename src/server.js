@@ -1,22 +1,13 @@
-const { json } = require('body-parser')
 const express = require('express')
-
-const generateTables = require('./database/generate_tables')
-
+const database = require('./database')
+const middlewares = require('./middlewares')
+const routes = require('./routes')
 const app = express()
 
-app.use(json())
+database()
 
-app.get('/', (_, res) => {
-  res
-    .status(200)
-    .send({
-      'message': 'Welcome to Mass Schedule API!',
-      'docs': "http://example.com/api/docs"
-    })
-})
-
-generateTables.generate()
+middlewares(app)
+routes(app)
 
 // Server up
 app.listen(3000, () => {
