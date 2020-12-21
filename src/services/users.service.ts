@@ -19,8 +19,17 @@ export default class UsersService {
     return this.userModel.findAll();
   }
 
-  async updateUser(id: number, user: User): Promise<[number, User[]]> {
-    return this.userModel.update(user, { where: { id: id } });
+  async updateUser(id: number, user: User): Promise<any> {
+    const updatedUsers = await this.userModel.update(user, {
+      where: { id: id },
+    });
+
+    if (updatedUsers[0] === 1) {
+      return {
+        id: id,
+        ...user,
+      };
+    }
   }
 
   async deleteUser(id: number) {

@@ -31,10 +31,7 @@ export default class UsersController {
   }
 
   @Patch(':id')
-  async updateUser(
-    @Param() { id },
-    @Body() user: User,
-  ): Promise<[number, User[]]> {
+  async updateUser(@Param() { id }, @Body() user: User): Promise<any> {
     return this.usersService.updateUser(id, user);
   }
 
