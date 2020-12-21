@@ -8,13 +8,12 @@ import {
   Post,
 } from '@nestjs/common';
 
-import User from './user.model';
-
-import UsersService from './users.service';
+import User from '../models/user.model';
+import UsersService from '../services/users.service';
 
 @Controller('users')
 export default class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
   async createUser(@Body() user: User): Promise<User> {
