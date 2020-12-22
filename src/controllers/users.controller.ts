@@ -21,8 +21,8 @@ export default class UsersController {
   }
 
   @Get(':id')
-  async readUser(@Param() { id }): Promise<User> {
-    return this.usersService.readUser(id);
+  async readUserById(@Param() { id }): Promise<User> {
+    return this.usersService.readUserById(id);
   }
 
   @Get()

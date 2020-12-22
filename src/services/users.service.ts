@@ -10,7 +10,7 @@ export default class UsersService {
     return this.userRepository.create(user);
   }
 
-  async readUser(id: number): Promise<User> {
+  async readUserById(id: number): Promise<User> {
     return this.userRepository.findOne({ where: { id: id } });
   }
 
@@ -32,7 +32,7 @@ export default class UsersService {
   }
 
   async deleteUser(id: number) {
-    const user = await this.readUser(id);
+    const user = await this.readUserById(id);
 
     const result: any = user.destroy();
 
