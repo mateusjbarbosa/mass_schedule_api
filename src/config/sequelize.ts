@@ -3,7 +3,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import User from 'src/repository/user.repository';
 
 export default class Sequelize {
-  static createInstance() {
+  public static createInstance() {
     return SequelizeModule.forRoot({
       dialect: 'postgres',
       host: 'localhost',
@@ -16,7 +16,7 @@ export default class Sequelize {
     });
   }
 
-  static createTables() {
+  public static createTables() {
     return SequelizeModule.forFeature([User]);
   }
 }
