@@ -31,11 +31,9 @@ export default class UsersService {
     }
   }
 
-  public async deleteUser(id: number) {
+  public async deleteUser(id: number): Promise<void> {
     const user = await this.readUserById(id);
 
-    const result: any = user.destroy();
-
-    console.log(result);
+    return await user.destroy();
   }
 }

@@ -36,7 +36,7 @@ export default class UsersController {
   }
 
   @Delete(':id')
-  public async deleteUser(@Param() { id }) {
+  public async deleteUser(@Param() { id }): Promise<void> {
     return this.usersService.deleteUser(id);
   }
 }
