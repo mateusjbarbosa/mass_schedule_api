@@ -9,12 +9,12 @@ import {
   Post,
 } from '@nestjs/common';
 
-import CustomNotFoundException from 'src/exceptions/core/custom_not_found.exception';
-import CustomBadRequestException from 'src/exceptions/core/custom_bad_request.exception';
-import SequelizeExceptions from 'src/exceptions/sequelize.exception';
+import CustomNotFoundException from '../exceptions/core/custom_not_found.exception';
+import CustomBadRequestException from '../exceptions/core/custom_bad_request.exception';
+import SequelizeExceptions from '../exceptions/sequelize.exception';
 
-import User from 'src/repository/user.repository';
-import UsersService from 'src/services/users.service';
+import User from '../repository/user.repository';
+import UsersService from '../services/users.service';
 
 @Controller('users')
 export default class UsersController {
