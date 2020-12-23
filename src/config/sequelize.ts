@@ -1,6 +1,6 @@
 import { SequelizeModule } from '@nestjs/sequelize';
 
-import User from 'src/repository/user.repository';
+import User from '../repository/user.repository';
 
 export default class Sequelize {
   public static createInstance() {
