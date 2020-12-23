@@ -7,6 +7,7 @@ import { Application } from 'express';
 
 import { UserController } from './controllers/user';
 
+import * as database from '@src/database';
 export class SetupServer extends Server {
   constructor(private port = 3000) {
     super();
@@ -24,9 +25,18 @@ export class SetupServer extends Server {
     ]);
   }
 
-  public init(): void {
+  private async setupDatabase(): Promise<void> {
+    await database.connect();
+  }
+
+  public async init(): Promise<void> {
     this.setupExpress();
     this.setupControllers();
+    await this.setupDatabase();
+  }
+
+  public async close(): Promise<void> {
+    await database.close();
   }
 
   public getApp(): Application {
