@@ -1,10 +1,26 @@
 import { Controller, Get, Post } from '@overnightjs/core';
 import { Request, Response } from 'express';
+
+import mongoose from 'mongoose';
+
+import { User } from '@src/models/user';
 @Controller('users')
 export class UserController {
   @Post('')
   public async createUser(req: Request, res: Response): Promise<void> {
-    res.status(204).send();
+    try {
+      const user = new User(req.body);
+      const result = await user.save();
+
+      res.setHeader('Content-Location', `/users/${result.id}`);
+      res.status(204).send();
+    } catch (err) {
+      if (err instanceof mongoose.Error.ValidationError) {
+        res.status(422).send({ error: err.message });
+      } else {
+        res.status(500).send({ error: 'Internal Server Error' });
+      }
+    }
   }
 
   @Get('')
@@ -25,8 +41,6 @@ export class UserController {
         individualRecord: '14334545645',
         role: 'FAITH',
         celebration_allowed_count: 3,
-        updatedAt: '2020-12-23T12:04:16.175Z',
-        createdAt: '2020-12-23T12:04:16.175Z',
       },
       {
         id: 2,
