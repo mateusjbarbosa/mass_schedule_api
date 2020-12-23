@@ -5,20 +5,3 @@ Devido a pandemia do Covid-19 em 2020, a Paróquia Nossa Senhora da Conceição 
 # Mass Schedule - Nossa Senhora da Conceição Parist | Conceição dos Ouros, MG - Brazil
 
 Due to the Covid-19 pandemic in 2020, Nossa Senhora da Conceição Parish in Conceição dos Ouros, MG, Brazil, needed to find ways to keep the celebrations safe. Thus, the parish priest requested the development of a web system, in which the faithful could schedule, by cell phone or computer, a celebration to participate in person.
-
-# Running
-
-Mass Schedule API was containerized using Docker. For the one to stay on, just run:
-
-```bash
-docker-compose up --build
-```
-
-# Utils
-
-Below are some utilities for better use of the Mass Schedule API.
-
-## Ports
-
-- API: 3000
-- MySQL: 3306
