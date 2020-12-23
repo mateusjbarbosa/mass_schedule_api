@@ -11,6 +11,7 @@
     "build": "tsc",
     "start": "yarn build && node dist/src/index.js",
     "start:dev": "ts-node-dev src/index.ts",
+    "test:unit": "jest",
     "test:functional": "jest --projects ./test --runInBand"
   },
   "repository": "https://github.com/mateusjbarbosa/mass_schedule_api",
