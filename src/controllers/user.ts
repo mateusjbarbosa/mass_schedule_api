@@ -1,8 +1,12 @@
-import { Controller, Get } from '@overnightjs/core';
+import { Controller, Get, Post } from '@overnightjs/core';
 import { Request, Response } from 'express';
-
 @Controller('users')
 export class UserController {
+  @Post('')
+  public async createUser(req: Request, res: Response): Promise<void> {
+    res.status(204).send();
+  }
+
   @Get('')
   public readAllUsers(_: Request, res: Response): void {
     res.send([
