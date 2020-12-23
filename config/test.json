@@ -1,0 +1,10 @@
+  {
+    "App": {
+      "resources": {
+        "_comment": "this resource should be removed",
+        "StormGlass": {
+          "apiToken": "test-token"
+        }
+      }
+    }
+  }

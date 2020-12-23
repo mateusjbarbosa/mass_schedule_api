@@ -1,0 +1,11 @@
+{
+  "App": {
+    "resources": {
+      "_comment": "this resource should be removed",
+      "StormGlass": {
+        "apiUrl": "https://api.stormglass.io/v2",
+        "apiToken": "do-not-hard-code"
+      }
+    }
+  }
+}
