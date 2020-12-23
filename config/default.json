@@ -1,11 +1,8 @@
 {
   "App": {
-    "resources": {
-      "_comment": "this resource should be removed",
-      "StormGlass": {
-        "apiUrl": "https://api.stormglass.io/v2",
-        "apiToken": "do-not-hard-code"
-      }
-    }
+    "database": {
+      "mongoUrl": "mongodb://localhost:27017/mass_schedule_database"
+    },
+    "resources": {}
   }
 }
