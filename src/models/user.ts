@@ -1,5 +1,7 @@
 import mongoose, { Document, Model } from 'mongoose';
 
+import { AuthService } from '@src/services/auth';
+
 export enum UserRole {
   FAITH = 'FAITH',
   SECRETARY = 'SECRETARY',
@@ -14,6 +16,7 @@ export interface User {
   _id?: string;
   telephoneNumber: string;
   fullName: string;
+  password: string;
   dateBirth: string;
   isTithe: boolean;
   street: string;
@@ -31,6 +34,7 @@ const schema = new mongoose.Schema(
   {
     telephoneNumber: { type: String, required: true },
     fullName: { type: String, required: true },
+    password: { type: String },
     dateBirth: { type: String, required: true },
     isTithe: { type: Boolean, required: true },
     street: { type: String, required: true },
@@ -77,6 +81,19 @@ schema.path('individualRecord').validate(
   'already exists in the database',
   CUSTOM_VALIDATION.DUPLICATED
 );
+
+schema.pre<UserModel>('save', async function (): Promise<void> {
+  if (!this.password || !this.isModified('password')) {
+    return;
+  }
+
+  try {
+    const hashedPassword = await AuthService.hashPassword(this.password);
+    this.password = hashedPassword;
+  } catch (err) {
+    console.log(`Error hashing the password for the use ${this.fullName}`);
+  }
+});
 
 interface UserModel extends Omit<User, '_id'>, Document {}
 
