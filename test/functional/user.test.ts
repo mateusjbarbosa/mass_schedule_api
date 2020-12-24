@@ -1,8 +1,8 @@
 import { User } from '@src/models/user';
 
-import userRegisterCorrectFixture from '@test/fixtures/user_register_correct_fixture';
-import userRegisterTypeErrorFixture from '@test/fixtures/user_register_error_type_fixture';
-import userRegisterWithoutFixture from '@test/fixtures/user_register_without_fullName_fixture';
+import userRegisterCorrectFixture from '../fixtures/user_register_correct_fixture.json';
+import userRegisterTypeErrorFixture from '@test/fixtures/user_register_error_type_fixture.json';
+import userRegisterWithoutFixture from '@test/fixtures/user_register_without_fullName_fixture.json';
 
 describe('User functional tests', () => {
   beforeAll(async () => User.deleteMany({}));
