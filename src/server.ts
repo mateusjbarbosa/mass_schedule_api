@@ -8,6 +8,7 @@ import { Application } from 'express';
 import { UserController } from './controllers/user';
 
 import * as database from '@src/database';
+import { CelebrationController } from './controllers/celebration';
 export class SetupServer extends Server {
   constructor(private port = 3000) {
     super();
@@ -19,9 +20,11 @@ export class SetupServer extends Server {
 
   private setupControllers(): void {
     const userController = new UserController();
+    const celebrationController = new CelebrationController();
 
     this.addControllers([
-      userController
+      userController,
+      celebrationController
     ]);
   }
 
