@@ -101,4 +101,56 @@ describe('User functional tests', () => {
       );
     });
   });
+
+  describe('When authenticating a user', () => {
+    it('should generate a token for a valid user', async () => {
+      const userBody = userRegisterSecretaryFixture;
+      const { body } = await global.testRequest
+        .post('/users/authenticate')
+        .send({
+          telephoneNumber: userBody.telephoneNumber,
+          dateBirth: userBody.dateBirth,
+          password: userBody.password,
+        });
+
+      expect(body).toEqual(
+        expect.objectContaining({ token: expect.any(String) })
+      );
+    });
+
+    it('should return 401 if the user not found', async () => {
+      const { body, status } = await global.testRequest
+        .post('/users/authenticate')
+        .send({
+          telephoneNumber: '11223344556',
+          dateBirth: '1990-01-01',
+          password: '11223344',
+        });
+
+        expect(status).toBe(401);
+        expect(body).toEqual({
+          code: 401,
+          error:
+            'User not found',
+        });
+    });
+
+    it('should return 401 if the user wrong password', async () => {
+      const userBody = userRegisterSecretaryFixture;
+      const { body, status } = await global.testRequest
+        .post('/users/authenticate')
+        .send({
+          telephoneNumber: userBody.telephoneNumber,
+          dateBirth: userBody.dateBirth,
+          password: '1122334455',
+        });
+
+        expect(status).toBe(401);
+        expect(body).toEqual({
+          code: 401,
+          error:
+            'Password does not match',
+        });
+    });
+  });
 });
