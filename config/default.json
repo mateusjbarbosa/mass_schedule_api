@@ -4,6 +4,10 @@
     "database": {
       "mongoUrl": "mongodb://localhost:27017/mass_schedule_database"
     },
+    "auth": {
+      "key": "some-key",
+      "tokenExpiresIn": "20000000"
+    },
     "resources": {}
   }
 }
