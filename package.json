@@ -12,7 +12,8 @@
     "start": "yarn build && node dist/src/index.js",
     "start:dev": "ts-node-dev src/index.ts",
     "test:unit": "jest",
-    "test:functional": "jest --projects ./test --runInBand"
+    "test:functional": "jest --projects ./test --runInBand",
+    "test:all": "yarn test:unit && yarn test:functional"
   },
   "repository": "https://github.com/mateusjbarbosa/mass_schedule_api",
   "author": "Mateus José Barbosa <dev.mateusbarbosa@gmail.com>",
