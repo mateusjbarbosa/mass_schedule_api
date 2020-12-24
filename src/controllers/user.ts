@@ -29,7 +29,6 @@ export class UserController extends BaseController {
     const users = await User.find({
       telephoneNumber: req.params.telephoneNumber,
     });
-    console.log(users);
     res.status(200).send(users);
   }
 
@@ -45,7 +44,10 @@ export class UserController extends BaseController {
     res: Response
   ): Promise<Response> {
     const { telephoneNumber, dateBirth, password } = req.body;
-    const user = await User.findOne({ telephoneNumber: telephoneNumber, dateBirth: dateBirth });
+    const user = await User.findOne({
+      telephoneNumber: telephoneNumber,
+      dateBirth: dateBirth,
+    });
 
     if (!user) {
       return res.status(401).send({
