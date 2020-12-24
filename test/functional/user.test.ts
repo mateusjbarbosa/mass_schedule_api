@@ -2,11 +2,11 @@ import { User } from '@src/models/user';
 
 import { AuthService } from '@src/services/auth';
 
-import userRegisterCorrectFixture from '../fixtures/user_register_correct_fixture.json';
-import userRegisterTypeErrorFixture from '@test/fixtures/user_register_error_type_fixture.json';
-import userRegisterWithoutFixture from '@test/fixtures/user_register_without_fullName_fixture.json';
-import userRegisterSecretaryFixture from '@test/fixtures/user_register_secretary_fixture.json';
-import userRegisterGeneralRecordExistsFixture from '@test/fixtures/user_register_general_record_exists_fixture.json';
+import userRegisterCorrectFixture from '../fixtures/user/user_register_correct_fixture.json';
+import userRegisterTypeErrorFixture from '@test/fixtures/user/user_register_error_type_fixture.json';
+import userRegisterWithoutFixture from '@test/fixtures/user/user_register_without_fullName_fixture.json';
+import userRegisterSecretaryFixture from '@test/fixtures/user/user_register_secretary_fixture.json';
+import userRegisterGeneralRecordExistsFixture from '@test/fixtures/user/user_register_general_record_exists_fixture.json';
 
 describe('User functional tests', () => {
   beforeAll(async () => User.deleteMany({}));
@@ -127,12 +127,11 @@ describe('User functional tests', () => {
           password: '11223344',
         });
 
-        expect(status).toBe(401);
-        expect(body).toEqual({
-          code: 401,
-          error:
-            'User not found',
-        });
+      expect(status).toBe(401);
+      expect(body).toEqual({
+        code: 401,
+        error: 'User not found',
+      });
     });
 
     it('should return 401 if the user wrong password', async () => {
@@ -145,12 +144,11 @@ describe('User functional tests', () => {
           password: '1122334455',
         });
 
-        expect(status).toBe(401);
-        expect(body).toEqual({
-          code: 401,
-          error:
-            'Password does not match',
-        });
+      expect(status).toBe(401);
+      expect(body).toEqual({
+        code: 401,
+        error: 'Password does not match',
+      });
     });
   });
 });
