@@ -41,6 +41,6 @@
     "config": "^3.3.3",
     "express": "^4.17.1",
     "module-alias": "^2.2.2",
-    "mongoose": "^5.11.8"
+    "mongoose": "~5.10.x"
   }
 }
