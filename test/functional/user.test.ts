@@ -1,14 +1,18 @@
 import { User } from '@src/models/user';
 
+import { AuthService } from '@src/services/auth';
+
 import userRegisterCorrectFixture from '../fixtures/user_register_correct_fixture.json';
 import userRegisterTypeErrorFixture from '@test/fixtures/user_register_error_type_fixture.json';
 import userRegisterWithoutFixture from '@test/fixtures/user_register_without_fullName_fixture.json';
+import userRegisterSecretaryFixture from '@test/fixtures/user_register_secretary_fixture.json';
+import userRegisterGeneralRecordExistsFixture from '@test/fixtures/user_register_general_record_exists_fixture.json';
 
 describe('User functional tests', () => {
   beforeAll(async () => User.deleteMany({}));
 
   describe('When creating a user', () => {
-    it('should sucessfully create a user', async () => {
+    it('should sucessfully create a faith user', async () => {
       const userBody = userRegisterCorrectFixture;
 
       const { headers, body, status } = await global.testRequest
@@ -18,6 +22,26 @@ describe('User functional tests', () => {
       expect(status).toBe(201);
       expect(headers['content-location']).toContain('/users/');
       expect(body).toEqual(expect.objectContaining(userBody));
+    });
+
+    it('should sucessfully create a secretary user', async () => {
+      const userBody = userRegisterSecretaryFixture;
+
+      const { headers, body, status } = await global.testRequest
+        .post('/users')
+        .send(userBody);
+
+      expect(status).toBe(201);
+      expect(headers['content-location']).toContain('/users/');
+      await expect(
+        AuthService.comparePassword(userBody.password, body['password'])
+      ).resolves.toBeTruthy();
+      expect(body).toEqual(
+        expect.objectContaining({
+          ...userBody,
+          ...{ password: expect.any(String) },
+        })
+      );
     });
 
     it('should return 422 when a user item data is missing', async () => {
@@ -50,7 +74,7 @@ describe('User functional tests', () => {
     });
 
     it('should return 409 when the general record already exists', async () => {
-      const userBody = userRegisterCorrectFixture;
+      const userBody = userRegisterGeneralRecordExistsFixture;
 
       const { body, status } = await global.testRequest
         .post('/users')
@@ -59,7 +83,8 @@ describe('User functional tests', () => {
       expect(status).toBe(409);
       expect(body).toEqual({
         code: 409,
-        error: 'User validation failed: generalRecord: already exists in the database, individualRecord: already exists in the database',
+        error:
+          'User validation failed: generalRecord: already exists in the database',
       });
     });
   });
@@ -71,7 +96,9 @@ describe('User functional tests', () => {
       const { body, status } = await global.testRequest.get('/users');
 
       expect(status).toBe(200);
-      expect(body).toEqual([expect.objectContaining(userBody)]);
+      expect(body).toEqual(
+        expect.arrayContaining([expect.objectContaining(userBody)])
+      );
     });
   });
 });
