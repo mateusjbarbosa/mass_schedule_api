@@ -1,0 +1,19 @@
+{
+  "name": "mass_schedule_api",
+  "version": "1.0.0",
+  "description": "Devido a pandemia do Covid-19 em 2020, a Paróquia Nossa Senhora da Conceição em Conceição dos Ouros, MG, Brazil, precisou encontrar meios para manter as celebrações de forma segura. Dessa forma, o pároco solicitou o desenvolvimento de um sistema web, no qual os fiéis pudessem agendar, pelo celular ou computador, uma celebração para participar presencialmente.",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mateusjbarbosa/mass_schedule_api.git"
+  },
+  "keywords": [],
+  "author": "Mateus José Barbosa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mateusjbarbosa/mass_schedule_api/issues"
+  }
+}
