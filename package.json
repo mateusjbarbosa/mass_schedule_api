@@ -15,5 +15,8 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mateusjbarbosa/mass_schedule_api/issues"
+  },
+  "devDependencies": {
+    "standard": "^16.0.3"
   }
 }
