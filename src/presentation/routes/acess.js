@@ -22,6 +22,6 @@ module.exports = class AcessRouter {
 
     this.authUseCase.auth(phoneNumber, dateBirth)
 
-    return { statusCode: 401 }
+    return HttpResponse.unauthorized()
   }
 }

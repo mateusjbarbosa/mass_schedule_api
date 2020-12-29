@@ -1,5 +1,7 @@
 const AcessRouter = require('./acess')
+
 const RequiredParamError = require('../errors/required-param')
+const UnauthorizedError = require('../errors/unauthorized')
 
 class AuthUseCaseSpy {
   auth (phoneNumber, dateBirth) {
@@ -68,6 +70,7 @@ describe('Acess Router', () => {
     const httpResponse = sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(401)
+    expect(httpResponse.message).toEqual(new UnauthorizedError())
   })
 
   test('Should call AuthUseCase with correct params', () => {
