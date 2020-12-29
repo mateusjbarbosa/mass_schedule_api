@@ -1,42 +1,5 @@
-class RequiredParamError extends Error {
-  constructor (paramName) {
-    super(`${paramName} is required`)
-    this.name = 'RequiredParamError'
-  }
-}
-
-class HttpResponse {
-  static badRequest (paramName) {
-    return {
-      statusCode: 400,
-      message: new RequiredParamError(paramName)
-    }
-  }
-
-  static internalServerError () {
-    return {
-      statusCode: 500
-    }
-  }
-}
-
-class AcessRouter {
-  route (httpRequest) {
-    if (!httpRequest || !httpRequest.body) {
-      return HttpResponse.internalServerError()
-    }
-
-    const { phoneNumber, dateBirth } = httpRequest.body
-
-    if (!phoneNumber) {
-      return HttpResponse.badRequest('phoneNumber')
-    }
-
-    if (!dateBirth) {
-      return HttpResponse.badRequest('dateBirth')
-    }
-  }
-}
+const AcessRouter = require('./acess')
+const RequiredParamError = require('../errors/required-param')
 
 describe('Acess Router', () => {
   test('Should return 400 if no phone number is provided', () => {
