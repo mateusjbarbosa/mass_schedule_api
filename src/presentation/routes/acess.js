@@ -1,6 +1,10 @@
 const HttpResponse = require('../helpers/http-response')
 
 module.exports = class AcessRouter {
+  constructor (authUseCase) {
+    this.authUseCase = authUseCase
+  }
+
   route (httpRequest) {
     if (!httpRequest || !httpRequest.body) {
       return HttpResponse.internalServerError()
@@ -15,5 +19,7 @@ module.exports = class AcessRouter {
     if (!dateBirth) {
       return HttpResponse.badRequest('dateBirth')
     }
+
+    this.authUseCase.auth(phoneNumber, dateBirth)
   }
 }
