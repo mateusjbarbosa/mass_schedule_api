@@ -1,6 +1,7 @@
 class AcessRouter {
   route (httpRequest) {
-    if (!httpRequest.body.phone_number || !httpRequest.body.date_birth) {
+    const { phoneNumber, dateBirth } = httpRequest.body
+    if (!phoneNumber || !dateBirth) {
       return {
         statusCode: 400
       }
@@ -13,7 +14,7 @@ describe('Acess Router', () => {
     const sut = new AcessRouter()
     const httpRequest = {
       body: {
-        date_birth: '01/01/1990'
+        dateBirth: '01/01/1990'
       }
     }
     const httpResponse = sut.route(httpRequest)
@@ -25,7 +26,7 @@ describe('Acess Router', () => {
     const sut = new AcessRouter()
     const httpRequest = {
       body: {
-        phone_number: '99999999999'
+        phoneNumber: '99999999999'
       }
     }
     const httpResponse = sut.route(httpRequest)
