@@ -4,7 +4,7 @@
   "description": "Devido a pandemia do Covid-19 em 2020, a Paróquia Nossa Senhora da Conceição em Conceição dos Ouros, MG, Brazil, precisou encontrar meios para manter as celebrações de forma segura. Dessa forma, o pároco solicitou o desenvolvimento de um sistema web, no qual os fiéis pudessem agendar, pelo celular ou computador, uma celebração para participar presencialmente.",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watchAll",
     "test:staged": "jest"
   },
   "standard": {
