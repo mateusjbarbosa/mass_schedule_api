@@ -1,17 +1,39 @@
+class RequiredParamError extends Error {
+  constructor (paramName) {
+    super(`${paramName} is required`)
+    this.name = 'RequiredParamError'
+  }
+}
+
+class HttpResponse {
+  static badRequest (paramName) {
+    return {
+      statusCode: 400,
+      message: new RequiredParamError(paramName)
+    }
+  }
+
+  static internalServerError () {
+    return {
+      statusCode: 500
+    }
+  }
+}
+
 class AcessRouter {
   route (httpRequest) {
     if (!httpRequest || !httpRequest.body) {
-      return {
-        statusCode: 500
-      }
+      return HttpResponse.internalServerError()
     }
 
     const { phoneNumber, dateBirth } = httpRequest.body
 
-    if (!phoneNumber || !dateBirth) {
-      return {
-        statusCode: 400
-      }
+    if (!phoneNumber) {
+      return HttpResponse.badRequest('phoneNumber')
+    }
+
+    if (!dateBirth) {
+      return HttpResponse.badRequest('dateBirth')
     }
   }
 }
@@ -27,6 +49,7 @@ describe('Acess Router', () => {
     const httpResponse = sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.message).toEqual(new RequiredParamError('phoneNumber'))
   })
 
   test('Should return 400 if no date birth is provided', () => {
@@ -39,6 +62,7 @@ describe('Acess Router', () => {
     const httpResponse = sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.message).toEqual(new RequiredParamError('dateBirth'))
   })
 
   test('Should return 500 if no httpRequest is provided', () => {
