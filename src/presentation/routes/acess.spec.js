@@ -33,6 +33,30 @@ describe('Acess Router', () => {
     expect(httpResponse.statusCode).toBe(500)
   })
 
+  test('Should return 500 if no AuthUseCase is provided', () => {
+    const sut = new AcessRouter()
+    const httpRequest = {
+      body: {
+        phoneNumber: '99999999999',
+        dateBirth: '01/01/1990'
+      }
+    }
+    const httpResponse = sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+  })
+
+  test('Should return 500 if AuthUseCase has no auth method', () => {
+    const sut = new AcessRouter({})
+    const httpRequest = {
+      body: {
+        phoneNumber: '99999999999',
+        dateBirth: '01/01/1990'
+      }
+    }
+    const httpResponse = sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+  })
+
   test('Should return 400 if no phone number is provided', () => {
     const { sut } = makeSut()
     const httpRequest = {
