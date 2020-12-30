@@ -102,6 +102,34 @@ describe('Acess Router', () => {
     expect(httpResponse.statusCode).toBe(500)
   })
 
+  test('Should return 500 if no PhoneNumberValidator is provided', async () => {
+    const authUseCaseSpy = new AuthUseCaseSpy()
+    const sut = new AcessRouter(authUseCaseSpy)
+    const httpRequest = {
+      body: {
+        phoneNumber: '99999999999',
+        dateBirth: '01/01/1990'
+      }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.message).toEqual(new ServerError())
+  })
+
+  test('Should return 500 if PhoneNumberValidator has no isValid method', async () => {
+    const authUseCaseSpy = new AuthUseCaseSpy()
+    const sut = new AcessRouter(authUseCaseSpy, {})
+    const httpRequest = {
+      body: {
+        phoneNumber: '99999999999',
+        dateBirth: '01/01/1990'
+      }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.message).toEqual(new ServerError())
+  })
+
   test('Should return 400 if no phone number is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
