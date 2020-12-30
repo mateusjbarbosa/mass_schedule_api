@@ -26,6 +26,6 @@ module.exports = class AcessRouter {
       return HttpResponse.unauthorized()
     }
 
-    return HttpResponse.ok()
+    return HttpResponse.ok({ acessToken })
   }
 }

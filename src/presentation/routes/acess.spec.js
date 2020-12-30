@@ -117,7 +117,7 @@ describe('Acess Router', () => {
   })
 
   test('Should return 200 when valid credentials are provided', () => {
-    const { sut } = makeSut()
+    const { sut, authUseCaseSpy } = makeSut()
     const httpRequest = {
       body: {
         phoneNumber: '99999999999',
@@ -127,5 +127,6 @@ describe('Acess Router', () => {
     const httpResponse = sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.message.acessToken).toEqual(authUseCaseSpy.acessToken)
   })
 })
