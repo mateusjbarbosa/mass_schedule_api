@@ -20,8 +20,12 @@ module.exports = class AcessRouter {
       return HttpResponse.badRequest('dateBirth')
     }
 
-    this.authUseCase.auth(phoneNumber, dateBirth)
+    const acessToken = this.authUseCase.auth(phoneNumber, dateBirth)
 
-    return HttpResponse.unauthorized()
+    if (!acessToken) {
+      return HttpResponse.unauthorized()
+    }
+
+    return HttpResponse.ok()
   }
 }

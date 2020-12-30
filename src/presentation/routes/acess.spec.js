@@ -7,12 +7,16 @@ class AuthUseCaseSpy {
   auth (phoneNumber, dateBirth) {
     this.phoneNumber = phoneNumber
     this.dateBirth = dateBirth
+
+    return this.acessToken
   }
 }
 
 const makeSut = () => {
   const authUseCaseSpy = new AuthUseCaseSpy()
   const sut = new AcessRouter(authUseCaseSpy)
+
+  authUseCaseSpy.acessToken = 'valid_token'
 
   return { sut, authUseCaseSpy }
 }
@@ -84,7 +88,8 @@ describe('Acess Router', () => {
   })
 
   test('Should return 401 when invalid credentials are provided', () => {
-    const { sut } = makeSut()
+    const { sut, authUseCaseSpy } = makeSut()
+    authUseCaseSpy.acessToken = null
     const httpRequest = {
       body: {
         phoneNumber: '99999999999',
@@ -109,5 +114,18 @@ describe('Acess Router', () => {
 
     expect(authUseCaseSpy.phoneNumber).toBe(httpRequest.body.phoneNumber)
     expect(authUseCaseSpy.dateBirth).toBe(httpRequest.body.dateBirth)
+  })
+
+  test('Should return 200 when valid credentials are provided', () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        phoneNumber: '99999999999',
+        dateBirth: '01/01/1990'
+      }
+    }
+    const httpResponse = sut.route(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(200)
   })
 })
