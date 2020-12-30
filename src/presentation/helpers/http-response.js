@@ -1,4 +1,3 @@
-const RequiredParamError = require('../errors/required-param')
 const UnauthorizedError = require('../errors/unauthorized')
 const ServerError = require('../errors/server')
 
@@ -10,10 +9,10 @@ module.exports = class HttpResponse {
     }
   }
 
-  static badRequest (paramName) {
+  static badRequest (error) {
     return {
       statusCode: 400,
-      message: new RequiredParamError(paramName)
+      message: error
     }
   }
 

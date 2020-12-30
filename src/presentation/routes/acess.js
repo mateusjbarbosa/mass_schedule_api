@@ -1,3 +1,5 @@
+const RequiredParamError = require('../errors/required-param')
+
 const HttpResponse = require('../helpers/http-response')
 
 module.exports = class AcessRouter {
@@ -10,11 +12,11 @@ module.exports = class AcessRouter {
       const { phoneNumber, dateBirth } = httpRequest.body
 
       if (!phoneNumber) {
-        return HttpResponse.badRequest('phoneNumber')
+        return HttpResponse.badRequest(new RequiredParamError('phoneNumber'))
       }
 
       if (!dateBirth) {
-        return HttpResponse.badRequest('dateBirth')
+        return HttpResponse.badRequest(new RequiredParamError('dateBirth'))
       }
 
       const acessToken = await this.authUseCase.auth(phoneNumber, dateBirth)
