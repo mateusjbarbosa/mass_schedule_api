@@ -26,6 +26,12 @@ class PhoneNumberValidatorSpy {
   }
 }
 
+class PhoneNumberValidatorSpyWithError {
+  isValid (phoneNumber) {
+    throw new Error()
+  }
+}
+
 const makeSut = () => {
   const authUseCaseSpy = new AuthUseCaseSpy()
   const phoneNumberValidatorSpy = new PhoneNumberValidatorSpy()
@@ -37,13 +43,26 @@ const makeSut = () => {
   return { sut, authUseCaseSpy, phoneNumberValidatorSpy }
 }
 
-const makeSutWithError = () => {
+const makeSutWithAuthUseCaseError = () => {
   const authUseCaseSpyWithError = new AuthUseCaseSpyWithError()
-  const sut = new AcessRouter(authUseCaseSpyWithError)
+  const phoneNumberValidatorSpy = new PhoneNumberValidatorSpy()
+  const sut = new AcessRouter(authUseCaseSpyWithError, phoneNumberValidatorSpy)
 
   authUseCaseSpyWithError.acessToken = 'valid_token'
+  phoneNumberValidatorSpy.isPhoneNumberValid = true
 
-  return { sut, authUseCaseSpyWithError }
+  return { sut, authUseCaseSpyWithError, phoneNumberValidatorSpy }
+}
+
+const makeSutWithPhoneNumberValidatorError = () => {
+  const authUseCaseSpy = new AuthUseCaseSpy()
+  const phoneNumberValidatorSpyWithError = new PhoneNumberValidatorSpyWithError()
+  const sut = new AcessRouter(authUseCaseSpy, phoneNumberValidatorSpyWithError)
+
+  authUseCaseSpy.acessToken = 'valid_token'
+  phoneNumberValidatorSpyWithError.isPhoneNumberValid = true
+
+  return { sut, authUseCaseSpy, phoneNumberValidatorSpyWithError }
 }
 
 describe('Acess Router', () => {
@@ -91,7 +110,7 @@ describe('Acess Router', () => {
   })
 
   test('Should return 500 if AuthUseCase throws', async () => {
-    const { sut } = makeSutWithError()
+    const { sut } = makeSutWithAuthUseCaseError()
     const httpRequest = {
       body: {
         phoneNumber: '99999999999',
@@ -128,6 +147,18 @@ describe('Acess Router', () => {
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.message).toEqual(new ServerError())
+  })
+
+  test('Should return 500 if PhoneNumberValidator throws', async () => {
+    const { sut } = makeSutWithPhoneNumberValidatorError()
+    const httpRequest = {
+      body: {
+        phoneNumber: '99999999999',
+        dateBirth: '01/01/1990'
+      }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
   })
 
   test('Should return 400 if no phone number is provided', async () => {
