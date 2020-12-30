@@ -2,6 +2,7 @@ const AcessRouter = require('./acess')
 
 const RequiredParamError = require('../errors/required-param')
 const UnauthorizedError = require('../errors/unauthorized')
+const ServerError = require('../errors/server')
 
 class AuthUseCaseSpy {
   auth (phoneNumber, dateBirth) {
@@ -9,6 +10,12 @@ class AuthUseCaseSpy {
     this.dateBirth = dateBirth
 
     return this.acessToken
+  }
+}
+
+class AuthUseCaseSpyWithError {
+  auth () {
+    throw new Error()
   }
 }
 
@@ -21,12 +28,22 @@ const makeSut = () => {
   return { sut, authUseCaseSpy }
 }
 
+const makeSutWithError = () => {
+  const authUseCaseSpyWithError = new AuthUseCaseSpyWithError()
+  const sut = new AcessRouter(authUseCaseSpyWithError)
+
+  authUseCaseSpyWithError.acessToken = 'valid_token'
+
+  return { sut, authUseCaseSpyWithError }
+}
+
 describe('Acess Router', () => {
   test('Should return 500 if no httpRequest is provided', () => {
     const { sut } = makeSut()
     const httpResponse = sut.route()
 
     expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.message).toEqual(new ServerError())
   })
 
   test('Should return 500 if httpRequest has no body', () => {
@@ -35,6 +52,7 @@ describe('Acess Router', () => {
     const httpResponse = sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.message).toEqual(new ServerError())
   })
 
   test('Should return 500 if no AuthUseCase is provided', () => {
@@ -47,10 +65,24 @@ describe('Acess Router', () => {
     }
     const httpResponse = sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.message).toEqual(new ServerError())
   })
 
   test('Should return 500 if AuthUseCase has no auth method', () => {
     const sut = new AcessRouter({})
+    const httpRequest = {
+      body: {
+        phoneNumber: '99999999999',
+        dateBirth: '01/01/1990'
+      }
+    }
+    const httpResponse = sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.message).toEqual(new ServerError())
+  })
+
+  test('Should return 500 if AuthUseCase throws', () => {
+    const { sut } = makeSutWithError()
     const httpRequest = {
       body: {
         phoneNumber: '99999999999',
