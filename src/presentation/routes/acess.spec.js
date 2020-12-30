@@ -5,7 +5,7 @@ const UnauthorizedError = require('../errors/unauthorized')
 const ServerError = require('../errors/server')
 
 class AuthUseCaseSpy {
-  auth (phoneNumber, dateBirth) {
+  async auth (phoneNumber, dateBirth) {
     this.phoneNumber = phoneNumber
     this.dateBirth = dateBirth
 
@@ -14,7 +14,7 @@ class AuthUseCaseSpy {
 }
 
 class AuthUseCaseSpyWithError {
-  auth () {
+  async auth () {
     throw new Error()
   }
 }
@@ -38,24 +38,24 @@ const makeSutWithError = () => {
 }
 
 describe('Acess Router', () => {
-  test('Should return 500 if no httpRequest is provided', () => {
+  test('Should return 500 if no httpRequest is provided', async () => {
     const { sut } = makeSut()
-    const httpResponse = sut.route()
+    const httpResponse = await sut.route()
 
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.message).toEqual(new ServerError())
   })
 
-  test('Should return 500 if httpRequest has no body', () => {
+  test('Should return 500 if httpRequest has no body', async () => {
     const { sut } = makeSut()
     const httpRequest = {}
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.message).toEqual(new ServerError())
   })
 
-  test('Should return 500 if no AuthUseCase is provided', () => {
+  test('Should return 500 if no AuthUseCase is provided', async () => {
     const sut = new AcessRouter()
     const httpRequest = {
       body: {
@@ -63,12 +63,12 @@ describe('Acess Router', () => {
         dateBirth: '01/01/1990'
       }
     }
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.message).toEqual(new ServerError())
   })
 
-  test('Should return 500 if AuthUseCase has no auth method', () => {
+  test('Should return 500 if AuthUseCase has no auth method', async () => {
     const sut = new AcessRouter({})
     const httpRequest = {
       body: {
@@ -76,12 +76,12 @@ describe('Acess Router', () => {
         dateBirth: '01/01/1990'
       }
     }
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.message).toEqual(new ServerError())
   })
 
-  test('Should return 500 if AuthUseCase throws', () => {
+  test('Should return 500 if AuthUseCase throws', async () => {
     const { sut } = makeSutWithError()
     const httpRequest = {
       body: {
@@ -89,37 +89,37 @@ describe('Acess Router', () => {
         dateBirth: '01/01/1990'
       }
     }
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
   })
 
-  test('Should return 400 if no phone number is provided', () => {
+  test('Should return 400 if no phone number is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
         dateBirth: '01/01/1990'
       }
     }
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.message).toEqual(new RequiredParamError('phoneNumber'))
   })
 
-  test('Should return 400 if no date birth is provided', () => {
+  test('Should return 400 if no date birth is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
         phoneNumber: '99999999999'
       }
     }
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.message).toEqual(new RequiredParamError('dateBirth'))
   })
 
-  test('Should return 401 when invalid credentials are provided', () => {
+  test('Should return 401 when invalid credentials are provided', async () => {
     const { sut, authUseCaseSpy } = makeSut()
     authUseCaseSpy.acessToken = null
     const httpRequest = {
@@ -128,7 +128,7 @@ describe('Acess Router', () => {
         dateBirth: '01/01/1990'
       }
     }
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(401)
     expect(httpResponse.message).toEqual(new UnauthorizedError())
@@ -148,7 +148,7 @@ describe('Acess Router', () => {
     expect(authUseCaseSpy.dateBirth).toBe(httpRequest.body.dateBirth)
   })
 
-  test('Should return 200 when valid credentials are provided', () => {
+  test('Should return 200 when valid credentials are provided', async () => {
     const { sut, authUseCaseSpy } = makeSut()
     const httpRequest = {
       body: {
@@ -156,7 +156,7 @@ describe('Acess Router', () => {
         dateBirth: '01/01/1990'
       }
     }
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(200)
     expect(httpResponse.message.acessToken).toEqual(authUseCaseSpy.acessToken)

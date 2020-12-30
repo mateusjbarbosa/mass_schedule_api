@@ -5,7 +5,7 @@ module.exports = class AcessRouter {
     this.authUseCase = authUseCase
   }
 
-  route (httpRequest) {
+  async route (httpRequest) {
     try {
       const { phoneNumber, dateBirth } = httpRequest.body
 
@@ -17,7 +17,7 @@ module.exports = class AcessRouter {
         return HttpResponse.badRequest('dateBirth')
       }
 
-      const acessToken = this.authUseCase.auth(phoneNumber, dateBirth)
+      const acessToken = await this.authUseCase.auth(phoneNumber, dateBirth)
 
       if (!acessToken) {
         return HttpResponse.unauthorized()
