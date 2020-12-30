@@ -1,10 +1,12 @@
+const InvalidParamError = require('../errors/invalid-param')
 const RequiredParamError = require('../errors/required-param')
 
 const HttpResponse = require('../helpers/http-response')
 
 module.exports = class AcessRouter {
-  constructor (authUseCase) {
+  constructor (authUseCase, phoneNumberValidator) {
     this.authUseCase = authUseCase
+    this.phoneNumberValidator = phoneNumberValidator
   }
 
   async route (httpRequest) {
@@ -13,6 +15,10 @@ module.exports = class AcessRouter {
 
       if (!phoneNumber) {
         return HttpResponse.badRequest(new RequiredParamError('phoneNumber'))
+      }
+
+      if (!this.phoneNumberValidator.isValid(phoneNumber)) {
+        return HttpResponse.badRequest(new InvalidParamError('phoneNumber'))
       }
 
       if (!dateBirth) {

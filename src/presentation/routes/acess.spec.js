@@ -1,6 +1,7 @@
 const AcessRouter = require('./acess')
 
 const RequiredParamError = require('../errors/required-param')
+const InvalidParamError = require('../errors/invalid-param')
 const UnauthorizedError = require('../errors/unauthorized')
 const ServerError = require('../errors/server')
 
@@ -19,13 +20,21 @@ class AuthUseCaseSpyWithError {
   }
 }
 
+class PhoneNumberValidatorSpy {
+  isValid (phoneNumber) {
+    return this.isPhoneNumberValid
+  }
+}
+
 const makeSut = () => {
   const authUseCaseSpy = new AuthUseCaseSpy()
-  const sut = new AcessRouter(authUseCaseSpy)
+  const phoneNumberValidatorSpy = new PhoneNumberValidatorSpy()
+  const sut = new AcessRouter(authUseCaseSpy, phoneNumberValidatorSpy)
 
   authUseCaseSpy.acessToken = 'valid_token'
+  phoneNumberValidatorSpy.isPhoneNumberValid = true
 
-  return { sut, authUseCaseSpy }
+  return { sut, authUseCaseSpy, phoneNumberValidatorSpy }
 }
 
 const makeSutWithError = () => {
@@ -117,6 +126,20 @@ describe('Acess Router', () => {
 
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.message).toEqual(new RequiredParamError('dateBirth'))
+  })
+
+  test('Should return 400 if an invalid phone number is provided', async () => {
+    const { sut, phoneNumberValidatorSpy } = makeSut()
+    phoneNumberValidatorSpy.isPhoneNumberValid = false
+    const httpRequest = {
+      body: {
+        phoneNumber: '99999999999'
+      }
+    }
+    const httpResponse = await sut.route(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.message).toEqual(new InvalidParamError('phoneNumber'))
   })
 
   test('Should return 401 when invalid credentials are provided', async () => {
