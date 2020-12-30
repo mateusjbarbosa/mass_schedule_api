@@ -22,6 +22,7 @@ class AuthUseCaseSpyWithError {
 
 class PhoneNumberValidatorSpy {
   isValid (phoneNumber) {
+    this.phoneNumber = phoneNumber
     return this.isPhoneNumberValid
   }
 }
@@ -228,6 +229,19 @@ describe('Acess Router', () => {
 
     expect(authUseCaseSpy.phoneNumber).toBe(httpRequest.body.phoneNumber)
     expect(authUseCaseSpy.dateBirth).toBe(httpRequest.body.dateBirth)
+  })
+
+  test('Should call PhoneNumberValidator with correct phone number', () => {
+    const { sut, phoneNumberValidatorSpy } = makeSut()
+    const httpRequest = {
+      body: {
+        phoneNumber: '99999999999',
+        dateBirth: '01/01/1990'
+      }
+    }
+    sut.route(httpRequest)
+
+    expect(phoneNumberValidatorSpy.phoneNumber).toBe(httpRequest.body.phoneNumber)
   })
 
   test('Should return 200 when valid credentials are provided', async () => {
